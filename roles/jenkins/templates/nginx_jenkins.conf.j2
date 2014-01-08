@@ -1,0 +1,13 @@
+server {
+  server_name jenkins.{{ server_name }};     # e.g., server_name source.example.com;
+  server_tokens off;     # don't show the version number, a security best practice
+
+  # individual nginx logs for this jenkins vhost
+  access_log  /var/log/nginx/jenkins_access.log;
+  error_log   /var/log/nginx/jenkins_error.log;
+
+  location / {
+    proxy_pass http://127.0.0.1:8080;
+  }
+}
+

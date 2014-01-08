@@ -1,0 +1,7 @@
+- name: Ansible-Jenkins
+  hosts: server
+  user: root
+  roles:
+    - hostname
+    - nginx
+    - jenkins

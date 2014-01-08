@@ -1,0 +1,23 @@
+---
+- name: Template jenkins.repo
+  template: src=jenkins.repo dest=/etc/yum.repos.d/jenkins.repo mode=0644
+
+- name: Install openjdk
+  yum: pkg={{ item }} state=present
+  with_items:
+    - java-1.6.0-openjdk
+    - java-1.6.0-openjdk-devel
+
+- name: Install Jenkins
+  yum: pkg={{ item }} state=present
+  with_items:
+    - jenkins
+
+- name: ensure jenkins is running automatically at boot time
+  service: name=jenkins state=started enabled=yes
+
+- name: Template nginx/conf.d/jenkins.conf
+  template: src=nginx_jenkins.conf.j2 dest=/etc/nginx/conf.d/jenkins.conf mode=0644
+
+- name: restart nginx
+  service: name=nginx state=restarted
