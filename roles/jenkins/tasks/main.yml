@@ -13,6 +13,10 @@
   with_items:
     - jenkins
 
+- name: change port 8080 to 8082
+  lineinfile: dest=/etc/sysconfig/jenkins state=present regexp="JENKINS_PORT"
+              line="JENKINS_PORT=\"{{ jenkins_port }}\""
+
 - name: ensure jenkins is running automatically at boot time
   service: name=jenkins state=started enabled=yes
 

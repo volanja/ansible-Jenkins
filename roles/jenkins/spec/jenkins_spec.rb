@@ -20,3 +20,8 @@ end
 describe file('/etc/nginx/conf.d/jenkins.conf') do
   it { should be_file }
 end
+
+describe file('/etc/sysconfig/jenkins') do
+  it { should be_file }
+  it { should contain "JENKINS_PORT=\"8082\"" }
+end
