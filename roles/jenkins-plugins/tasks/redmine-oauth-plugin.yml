@@ -1,0 +1,29 @@
+---
+- name: Create Directory
+  command: mkdir -p {{ mvn_dir }}
+
+- name: Download maven {{ mvn_tar }}
+  get_url: url={{ mvn_url }}/{{ mvn_tar }} dest={{ mvn_dir }}/{{ mvn_tar }}
+
+- name: Extract maven
+  command: chdir={{ mvn_dir }} tar zxf {{ mvn_tar }}
+
+- name: Export path
+  lineinfile: dest=~/.bash_profile insertafter="^export PATH" state=present line='export M2_HOME={{ mvn_dir }}/apache-maven-{{ mvn_ver }}; export M2=$M2_HOME/bin ; export PATH=$M2:$PATH'
+
+- name: Download redmine-oauth-plugin
+  git: repo=https://github.com/mallowlabs/redmine-oauth-plugin.git
+       dest=/usr/local/src/redmine-oauth-plugin
+       update=no
+
+#build
+- name: mvn install  !!notice!! it takes too much time.
+  command: chdir=/usr/local/src/redmine-oauth-plugin {{ mvn_dir }}/apache-maven-{{ mvn_ver }}/bin/mvn install
+  register: stdout_install
+
+- name: Install Plugin
+  command: java -jar /var/lib/jenkins/jenkins-cli.jar -s http://127.0.0.1:8082/ install-plugin /usr/local/src/redmine-oauth-plugin/target/redmine-oauth.hpi
+  when: stdout_install.stdout.find('BUILD SUCCES') != -1
+
+- name: safe_restart
+  command: java -jar /var/lib/jenkins/jenkins-cli.jar -s http://127.0.0.1:8082/ safe-restart

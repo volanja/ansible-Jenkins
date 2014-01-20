@@ -1,0 +1,2 @@
+---
+- include: redmine-oauth-plugin.yml

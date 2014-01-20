@@ -1,0 +1,6 @@
+---
+#redmine-oauth-plugin.yml
+mvn_dir: /usr/local/apache-maven
+mvn_url: http://ftp.meisei-u.ac.jp/mirror/apache/dist/maven/maven-3/3.1.1/binaries
+mvn_tar: apache-maven-3.1.1-bin.tar.gz
+mvn_ver: 3.1.1

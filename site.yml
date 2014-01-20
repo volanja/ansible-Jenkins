@@ -5,3 +5,4 @@
     - hostname
     - nginx
     - jenkins
+    - jenkins-plugins

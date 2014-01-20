@@ -25,3 +25,6 @@
 
 - name: restart nginx
   service: name=nginx state=restarted
+
+- name: Download jenkins-cli.jar
+  get_url: url=http://127.0.0.1:8082/jnlpJars/jenkins-cli.jar dest=/var/lib/jenkins/jenkins-cli.jar
